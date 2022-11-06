@@ -36,3 +36,4 @@ out/
 
 ### VS Code ###
 .vscode/
+src/employee-system-api/src/main/resources/application.properties
