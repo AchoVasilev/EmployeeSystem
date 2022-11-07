@@ -40,4 +40,23 @@ public class EmployeeController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") Long employeeId) {
+        var employee = this.employeeService.getEmployeeById(employeeId);
+
+        if (employee.isPresent()) {
+            return ResponseEntity.ok(employee.get());
+        }
+
+        return ResponseEntity.notFound()
+                .build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Employee> updateEmployee(@PathVariable("id") Long employeeId, @RequestBody Employee employee) {
+        var updated = this.employeeService.updateEmployee(employeeId, employee);
+
+        return ResponseEntity.ok(updated);
+    }
 }
