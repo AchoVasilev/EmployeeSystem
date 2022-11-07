@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import EmployeeService from '../services/EmployeeService';
+import { useNavigate } from 'react-router-dom';
 
 const AddEmployee = () => {
     const [employee, setEmployee] = useState({
@@ -14,16 +15,29 @@ const AddEmployee = () => {
         setEmployee({ ...employee, [e.target.name]: value });
     };
 
+    const navigate = useNavigate();
+
     const saveEmployee = (e) => {
         e.preventDefault();
 
         EmployeeService.saveEmployee(employee)
             .then((response) => {
                 console.log(response);
+                navigate("/employeeList");
             })
             .catch((error) => {
                 console.log(error);
             });
+    };
+
+    const reset = (e) => {
+        e.preventDefault();
+        setEmployee({
+            id: "",
+            firstName: "",
+            lastName: "",
+            emailId: ""
+        });
     };
 
     return (
@@ -57,7 +71,7 @@ const AddEmployee = () => {
                     <button onClick={saveEmployee} className="rounded text-white font-semibold bg-green-400 hover:bg-green-700 py-2 px-6">
                         Save
                     </button>
-                    <button className="rounded text-white font-semibold bg-red-400 hover:bg-red-700 py-2 px-6">Clear</button>
+                    <button onClick={reset} className="rounded text-white font-semibold bg-red-400 hover:bg-red-700 py-2 px-6">Clear</button>
                 </div>
             </div>
         </div>

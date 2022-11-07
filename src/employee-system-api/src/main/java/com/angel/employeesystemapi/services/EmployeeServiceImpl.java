@@ -5,15 +5,16 @@ import com.angel.employeesystemapi.models.entities.EmployeeEntity;
 import com.angel.employeesystemapi.repositories.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class EmployeeServiceImpl implements EmployeeService{
+public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
 
-    @Override
     public Employee createEmployee(Employee employee) {
         var employeeEntity = new EmployeeEntity()
                 .setFirstName(employee.getFirstName())
@@ -24,5 +25,24 @@ public class EmployeeServiceImpl implements EmployeeService{
 
         return employee
                 .setId(employeeEntity.getId());
+    }
+
+    public List<Employee> getAllEmployees() {
+        return this.employeeRepository.findAll()
+                .stream()
+                .map(entity -> new Employee()
+                        .setId(entity.getId())
+                        .setEmailId(entity.getEmailId())
+                        .setFirstName(entity.getFirstName())
+                        .setLastName(entity.getLastName()))
+                .toList();
+    }
+
+    public boolean deleteEmployee(Long employeeId) {
+        var employee = this.employeeRepository.findById(employeeId).get();
+
+        this.employeeRepository.delete(employee);
+
+        return true;
     }
 }
