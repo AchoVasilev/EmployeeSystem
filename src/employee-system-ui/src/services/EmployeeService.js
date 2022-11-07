@@ -11,6 +11,10 @@ class EmployeeService {
     getEmployees() {
         return axios.get(baseUrl);
     }
+
+    deleteEmployee(id) {
+        return axios.delete(baseUrl + '/' + id);
+    }
 }
 
 export default new EmployeeService();
